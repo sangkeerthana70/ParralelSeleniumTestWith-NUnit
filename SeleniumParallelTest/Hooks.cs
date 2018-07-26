@@ -9,14 +9,37 @@ using System.Threading.Tasks;
 
 namespace SeleniumParallelTest
 {
+
+    public enum BrowserType
+    {
+        chrome,
+        Firefox,
+        IE
+    }
     [TestFixture]
     public class Hooks : Base//inherit the base class property
     {
+        private BrowserType _browserType;
+
         //constructor to initialize the driver object
-        public Hooks()
+        public Hooks(BrowserType browser)
         {
-            Driver = new ChromeDriver();
-            //Driver = new FirefoxDriver();
+            _browserType = browser;
+            
+        }
+
+        [SetUp]
+        public void InitializeTest()
+        {
+            ChooseDriverInstance(_browserType);
+        }
+
+        private void ChooseDriverInstance (BrowserType browserType)
+        {
+            if (browserType == BrowserType.chrome)
+                Driver = new ChromeDriver();
+            if (browserType == BrowserType.Firefox)
+                Driver = new FirefoxDriver();
         }
     }
 }
